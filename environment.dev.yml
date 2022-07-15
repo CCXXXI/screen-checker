@@ -1,6 +1,8 @@
 # mamba env create -f environment.dev.yml --force
-name: my-env
+name: screen-checker
 channels: [conda-forge]
 dependencies:
+  - opencv
+  # dev
   - black
   - pytest-cov
