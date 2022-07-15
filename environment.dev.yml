@@ -2,9 +2,7 @@
 name: screen-checker
 channels: [conda-forge]
 dependencies:
-  - pip
-  - pip:
-      - opencv-python
+  - opencv=4.5 # https://youtrack.jetbrains.com/issue/PY-35691/Code-completion-doesnt-work-for-cv2-module
   # dev
   - black
   - pytest-cov
