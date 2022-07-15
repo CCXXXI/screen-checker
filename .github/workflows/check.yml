@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: mamba-org/provision-with-micromamba@v11
+      - uses: mamba-org/provision-with-micromamba@v12
         with:
           environment-file: "environment.dev.yml"
       - run: pytest --cov=./ --cov-report xml
