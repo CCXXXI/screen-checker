@@ -1,0 +1,6 @@
+# mamba env create -f environment.dev.yml --force
+name: my-env
+channels: [conda-forge]
+dependencies:
+  - black
+  - pytest-cov

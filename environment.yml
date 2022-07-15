@@ -1,0 +1,5 @@
+# mamba env create -f environment.yml --force
+name: my-env
+channels: [conda-forge]
+dependencies:
+  - python
