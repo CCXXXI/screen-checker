@@ -4,7 +4,9 @@ channels: [conda-forge]
 dependencies:
   - opencv=4.5 # https://youtrack.jetbrains.com/issue/PY-35691/Code-completion-doesnt-work-for-cv2-module
   # dev
-  - black
+  - pip
+  - pip:
+      - black[jupyter]
   - pytest-cov
   - jupyter
   - matplotlib
