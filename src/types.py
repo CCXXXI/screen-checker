@@ -6,7 +6,7 @@ class Point(NamedTuple):
     col: int
 
 
-class Quadrilateral(NamedTuple):
+class Quad(NamedTuple):
     top_left: Point
     top_right: Point
     bottom_left: Point
