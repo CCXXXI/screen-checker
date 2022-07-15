@@ -8,4 +8,4 @@ dependencies:
   # dev
   - black
   - pytest-cov
-  - jupyterlab
+  - jupyter
