@@ -2,7 +2,9 @@
 name: screen-checker
 channels: [conda-forge]
 dependencies:
-  - opencv
+  - pip
+  - pip:
+      - opencv-python
   # dev
   - black
   - pytest-cov
