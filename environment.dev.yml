@@ -7,3 +7,4 @@ dependencies:
   - black
   - pytest-cov
   - jupyter
+  - matplotlib
