@@ -1,4 +1,7 @@
 from typing import NamedTuple
+from numpy import typing as npt
+
+Image = npt.NDArray
 
 
 class Point(NamedTuple):
