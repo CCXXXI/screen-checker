@@ -1,4 +1,4 @@
-from src.types import Quad, Point
+from data_types import Quad, Point
 from math import dist, sqrt
 
 quad = Quad(
