@@ -27,10 +27,10 @@ def test_find_screen(file: str, color: Color):
 @mark.parametrize(
     "file, color",
     (
+        ("../resources/white 0.jpg", Color.BLACK),
         *(("../resources/blue 0.jpg", c) for c in (Color.GREEN, Color.RED)),
         *(("../resources/green 0.jpg", c) for c in (Color.BLUE, Color.RED)),
         *(("../resources/red 0.jpg", c) for c in (Color.BLUE, Color.GREEN)),
-        ("../resources/red 0.jpg", Color.BLACK),
     ),
 )
 def test_find_screen_failed(file: str, color: Color):
