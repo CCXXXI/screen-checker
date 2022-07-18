@@ -1,5 +1,5 @@
 import cv2
-from pytest import mark
+from pytest import mark, raises
 
 from main import find_screen
 
@@ -22,3 +22,19 @@ def test_find_screen(file: str, color: int):
     for point in res:
         assert len(point) == 2
         assert all(point > 0)
+
+
+@mark.parametrize(
+    "file, color",
+    (
+        *(("../resources/blue 0.jpg", c) for c in (1, 2)),
+        *(("../resources/green 0.jpg", c) for c in (0, 2)),
+        *(("../resources/red 0.jpg", c) for c in (0, 1)),
+    ),
+)
+def test_find_screen_failed(file: str, color: int):
+    img = cv2.imread(file)
+    assert img is not None
+
+    with raises(ValueError):
+        find_screen(img, color)
