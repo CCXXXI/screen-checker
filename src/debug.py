@@ -1,11 +1,10 @@
 import cv2
 import imutils
 import matplotlib.pyplot as plt
+import numpy.typing as npt
 
-from data_types import Image
 
-
-def show(image: Image, contours=None):
+def show(image: npt.NDArray, contours=None):
     """
     Show image for debugging.
 
