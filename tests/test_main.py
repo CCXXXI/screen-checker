@@ -1,19 +1,19 @@
 import cv2
 from pytest import mark, raises
 
-from main import find_screen
+from main import find_screen, Color
 
 
 @mark.parametrize(
     "file, color",
     (
-        *(("../resources/white 0.jpg", c) for c in (None, *range(3))),
-        ("../resources/blue 0.jpg", 0),
-        ("../resources/green 0.jpg", 1),
-        ("../resources/red 0.jpg", 2),
+        *(("../resources/white 0.jpg", c) for c in Color),
+        ("../resources/blue 0.jpg", Color.BLUE),
+        ("../resources/green 0.jpg", Color.GREEN),
+        ("../resources/red 0.jpg", Color.RED),
     ),
 )
-def test_find_screen(file: str, color: int):
+def test_find_screen(file: str, color: Color):
     img = cv2.imread(file)
     assert img is not None
 
@@ -27,12 +27,12 @@ def test_find_screen(file: str, color: int):
 @mark.parametrize(
     "file, color",
     (
-        *(("../resources/blue 0.jpg", c) for c in (1, 2)),
-        *(("../resources/green 0.jpg", c) for c in (0, 2)),
-        *(("../resources/red 0.jpg", c) for c in (0, 1)),
+        *(("../resources/blue 0.jpg", c) for c in (Color.GREEN, Color.RED)),
+        *(("../resources/green 0.jpg", c) for c in (Color.BLUE, Color.RED)),
+        *(("../resources/red 0.jpg", c) for c in (Color.BLUE, Color.GREEN)),
     ),
 )
-def test_find_screen_failed(file: str, color: int):
+def test_find_screen_failed(file: str, color: Color):
     img = cv2.imread(file)
     assert img is not None
 

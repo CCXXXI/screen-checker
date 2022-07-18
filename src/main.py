@@ -1,22 +1,32 @@
+from enum import Enum
+
 import cv2
 import imutils
 import numpy.typing as npt
 
 
-def find_screen(photo: npt.NDArray, color: int = None) -> npt.NDArray:
+class Color(Enum):
+    """Colors."""
+
+    BLUE = 0
+    GREEN = 1
+    RED = 2
+    WHITE = 3
+
+
+def find_screen(photo: npt.NDArray, color: Color = Color.WHITE) -> npt.NDArray:
     """
     Find the screen in the photo.
 
     :param photo: A photo of the screen.
     :param color: The color of the screen.
-        Default is white. 0 for blue, 1 for green, 2 for red.
     :return: Four (x, y) points which are the four corners of the screen.
     """
     # BGR to gray
-    if color is None:
+    if color is Color.WHITE:
         gray = cv2.cvtColor(photo, cv2.COLOR_BGR2GRAY)
     else:
-        gray = photo[..., color]
+        gray = photo[..., color.value]
 
     # get the contours
     binary = cv2.threshold(gray, None, 255, cv2.THRESH_OTSU)[1]
