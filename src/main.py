@@ -2,7 +2,10 @@ from enum import Enum
 
 import cv2
 import imutils
+import numpy as np
 import numpy.typing as npt
+from colour import delta_E
+from imutils.perspective import four_point_transform
 
 
 class Color(Enum):
@@ -58,3 +61,29 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
         raise ValueError("Cannot find the screen.")
 
     return approx[:, 0, :]
+
+
+def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> float:
+    """
+    Check if the color of the screen is correct.
+
+    :param photo: A photo of the screen.
+    :param color: The color of the screen.
+    :param corners: The result of find_screen.
+    :return: A float value. Smaller means better.
+    """
+    # transform to rectangle
+    warped = four_point_transform(photo, corners)
+    cropped = warped[16:-16, 16:-16]
+
+    # increase the brightness unless the color is black
+    bgr = cropped
+    if color is not Color.BLACK:
+        hsv = cv2.cvtColor(cropped, cv2.COLOR_BGR2HSV)
+        hsv[:, :, 2] += 255 - np.max(hsv[:, :, 2])
+        bgr = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+
+    # check the color with delta_E method
+    lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
+    expected = cv2.cvtColor(np.uint8([[color2bgr[color]]]), cv2.COLOR_BGR2LAB)[0][0]
+    return np.max(delta_E(lab, expected))
