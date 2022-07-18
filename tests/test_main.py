@@ -7,7 +7,10 @@ from main import find_screen, Color
 @mark.parametrize(
     "file, color",
     (
-        *(("../resources/white 0.jpg", c) for c in Color),
+        *(
+            ("../resources/white 0.jpg", c)
+            for c in (Color.WHITE, Color.RED, Color.GREEN, Color.BLUE)
+        ),
         ("../resources/blue 0.jpg", Color.BLUE),
         ("../resources/green 0.jpg", Color.GREEN),
         ("../resources/red 0.jpg", Color.RED),
