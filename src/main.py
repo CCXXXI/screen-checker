@@ -15,10 +15,10 @@ class Color(Enum):
     BLACK = 4
 
 
-color2rgb = {
-    Color.BLUE: (0, 0, 255),
+color2bgr = {
+    Color.BLUE: (255, 0, 0),
     Color.GREEN: (0, 255, 0),
-    Color.RED: (255, 0, 0),
+    Color.RED: (0, 0, 255),
     Color.WHITE: (255, 255, 255),
     Color.BLACK: (0, 0, 0),
 }
