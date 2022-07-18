@@ -8,7 +8,8 @@ def find_screen(photo: npt.NDArray, color: int = None) -> npt.NDArray:
     Find the screen in the photo.
 
     :param photo: A photo of the screen.
-    :param color: The color of the screen. Default is white. 0 for blue, 1 for green, 2 for red.
+    :param color: The color of the screen.
+        Default is white. 0 for blue, 1 for green, 2 for red.
     :return: Four points of the screen.
     """
     # BGR to gray
