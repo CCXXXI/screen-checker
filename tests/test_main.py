@@ -30,6 +30,7 @@ def test_find_screen(file: str, color: Color):
         *(("../resources/blue 0.jpg", c) for c in (Color.GREEN, Color.RED)),
         *(("../resources/green 0.jpg", c) for c in (Color.BLUE, Color.RED)),
         *(("../resources/red 0.jpg", c) for c in (Color.BLUE, Color.GREEN)),
+        ("../resources/red 0.jpg", Color.BLACK),
     ),
 )
 def test_find_screen_failed(file: str, color: Color):

@@ -12,16 +12,29 @@ class Color(Enum):
     GREEN = 1
     RED = 2
     WHITE = 3
+    BLACK = 4
 
 
-def find_screen(photo: npt.NDArray, color: Color = Color.WHITE) -> npt.NDArray:
+color2rgb = {
+    Color.BLUE: (0, 0, 255),
+    Color.GREEN: (0, 255, 0),
+    Color.RED: (255, 0, 0),
+    Color.WHITE: (255, 255, 255),
+    Color.BLACK: (0, 0, 0),
+}
+
+
+def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
     """
     Find the screen in the photo.
 
     :param photo: A photo of the screen.
-    :param color: The color of the screen.
+    :param color: The color of the screen. Cannot be black.
     :return: Four (x, y) points which are the four corners of the screen.
     """
+    if color is Color.BLACK:
+        raise ValueError("Cannot find a black screen from a photo.")
+
     # BGR to gray
     if color is Color.WHITE:
         gray = cv2.cvtColor(photo, cv2.COLOR_BGR2GRAY)
