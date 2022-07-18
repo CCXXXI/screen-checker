@@ -4,16 +4,16 @@ on:
   push:
   pull_request:
 
-defaults:
-  run:
-    shell: bash -l {0}
-
 env:
-  PYTHONPATH: src
+  PYTHONPATH: ../src
 
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+        working-directory: tests
     steps:
       - uses: actions/checkout@v3
       - uses: mamba-org/provision-with-micromamba@v12
