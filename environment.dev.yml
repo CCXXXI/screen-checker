@@ -1,6 +1,14 @@
 # mamba env create -f environment.dev.yml --force
-name: my-env
+name: screen-checker
 channels: [conda-forge]
 dependencies:
-  - black
+  - opencv=4.5 # https://youtrack.jetbrains.com/issue/PY-35691/Code-completion-doesnt-work-for-cv2-module
+  - imutils
+  - colour-science
+  # dev
+  - pip
+  - pip:
+      - black[jupyter]
   - pytest-cov
+  - jupyter
+  - matplotlib
