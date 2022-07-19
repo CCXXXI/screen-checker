@@ -9,3 +9,5 @@
 [![codecov](https://codecov.io/gh/CCXXXI/screen-checker/branch/main/graph/badge.svg?token=7yynvFgJSD)](https://codecov.io/gh/CCXXXI/screen-checker)
 
 Screen Checker is a tool to check a screen by photos.
+
+See [example.ipynb](example.ipynb) for usage.
