@@ -1,10 +1,10 @@
 from enum import Enum
 
 import cv2
-import imutils
 import numpy as np
 import numpy.typing as npt
 from colour import delta_E
+from imutils import grab_contours
 from imutils.perspective import four_point_transform
 
 
@@ -46,7 +46,7 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
 
     # get the contours
     binary = cv2.threshold(gray, None, 255, cv2.THRESH_OTSU)[1]
-    contours = imutils.grab_contours(
+    contours = grab_contours(
         cv2.findContours(binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     )
 
