@@ -109,3 +109,15 @@ def test_check_screen_fail_black(black: Path, white: Path, wrong_color: Color):
         check_screen(img_black, wrong_color, find_screen(img_white, Color.WHITE))
         > FAIL_LIMIT
     )
+
+
+def test_debug():
+    import main
+
+    main.debug = True
+
+    img = cv2.imread("../resources/white/0.png")
+    assert img is not None
+    assert check_screen(img, Color.WHITE, find_screen(img, Color.WHITE)) < PASS_LIMIT
+
+    main.debug = False
