@@ -7,8 +7,7 @@ from pytest import mark, raises
 
 from main import Color, find_screen, check_screen
 
-PASS_LIMIT = 20
-FAIL_LIMIT = 35
+PASS_LIMIT = FAIL_LIMIT = 30
 
 photos = {
     c: set(Path(f"../resources/{c}/").glob("*"))
