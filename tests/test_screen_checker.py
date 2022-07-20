@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from pytest import mark, raises
 
-from main import Color, find_screen, check_screen
+from screen_checker import Color, find_screen, check_screen
 
 PASS_LIMIT = FAIL_LIMIT = 30
 
@@ -112,12 +112,12 @@ def test_check_screen_fail_black(black: Path, white: Path, wrong_color: Color):
 
 
 def test_debug():
-    import main
+    import screen_checker
 
-    main.debug = True
+    screen_checker.debug = True
 
     img = cv2.imread("../resources/white/0.png")
     assert img is not None
     assert check_screen(img, Color.WHITE, find_screen(img, Color.WHITE)) < PASS_LIMIT
 
-    main.debug = False
+    screen_checker.debug = False
