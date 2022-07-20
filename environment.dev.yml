@@ -5,9 +5,10 @@ dependencies:
   - opencv=4.5 # https://youtrack.jetbrains.com/issue/PY-35691/Code-completion-doesnt-work-for-cv2-module
   - imutils
   - colour-science
-  # dev
   - pip
   - pip:
+      - easyocr
+# dev
       - black[jupyter]
   - pytest-cov
   - jupyter
