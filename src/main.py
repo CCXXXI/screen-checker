@@ -55,7 +55,7 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
 
     # it should be a quadrilateral
     approx = cv2.approxPolyDP(
-        screen_contour, 0.1 * cv2.arcLength(screen_contour, True), True
+        screen_contour, 0.01 * cv2.arcLength(screen_contour, True), True
     )
     if len(approx) != 4:
         raise ValueError("Cannot find the screen.")
