@@ -9,10 +9,7 @@ from screen_checker import Color, find_screen, check_screen
 
 PASS_LIMIT = FAIL_LIMIT = 30
 
-photos = {
-    c: set(Path(f"../resources/{c}/").glob("*"))
-    for c in ("blue", "green", "red", "white", "black")
-}
+photos = {c.name: set(c.glob("*")) for c in Path("../resources/").glob("*")}
 
 
 @mark.parametrize(
