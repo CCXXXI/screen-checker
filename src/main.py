@@ -59,6 +59,19 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
     approx = cv2.approxPolyDP(
         screen_contour, 0.01 * cv2.arcLength(screen_contour, True), True
     )
+
+    # debug
+    # noinspection PyUnreachableCode
+    if __debug__:
+        from opencv_debug import show
+
+        show(photo)
+        show(gray)
+        show(binary)
+        show(photo, contours)
+        show(photo, [screen_contour])
+        show(photo, [approx])
+
     if len(approx) != 4:
         raise ValueError("Cannot find the screen.")
 
@@ -88,4 +101,17 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
     # check the color with delta_E method
     lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
     expected = cvt_single_color(color2bgr[color], cv2.COLOR_BGR2LAB)
-    return np.max(delta_E(lab, expected))
+    delta_e = delta_E(lab, expected)
+
+    # debug
+    # noinspection PyUnreachableCode
+    if __debug__:
+        from opencv_debug import show
+
+        show(photo)
+        show(warped)
+        show(cropped)
+        show(bgr)
+        show(cv2.normalize(delta_e.astype(np.uint8), None, 0, 255, cv2.NORM_MINMAX))
+
+    return np.max(delta_e)
