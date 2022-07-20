@@ -120,4 +120,8 @@ def test_debug():
     assert img is not None
     assert check_screen(img, Color.WHITE, find_screen(img, Color.WHITE)) < PASS_LIMIT
 
+    img = cv2.imread("../resources/green/0.png")
+    assert img is not None
+    assert check_screen(img, Color.GREEN, find_screen(img, Color.GREEN)) < PASS_LIMIT
+
     screen_checker.debug = False
