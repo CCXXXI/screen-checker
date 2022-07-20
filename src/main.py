@@ -9,6 +9,8 @@ from imutils.perspective import four_point_transform
 
 from opencv_utils import cvt_single_color
 
+debug = False
+
 
 class Color(Enum):
     """Colors."""
@@ -60,9 +62,7 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
         screen_contour, 0.01 * cv2.arcLength(screen_contour, True), True
     )
 
-    # debug
-    # noinspection PyUnreachableCode
-    if __debug__:
+    if debug:
         from opencv_debug import show
 
         show(photo)
@@ -103,9 +103,7 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
     expected = cvt_single_color(color2bgr[color], cv2.COLOR_BGR2LAB)
     delta_e = delta_E(lab, expected)
 
-    # debug
-    # noinspection PyUnreachableCode
-    if __debug__:
+    if debug:
         from opencv_debug import show
 
         show(photo)
