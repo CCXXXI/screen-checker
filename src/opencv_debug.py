@@ -14,4 +14,5 @@ def show(image: npt.NDArray, contours=None):
     tmp = image.copy()
     if contours is not None:
         cv2.drawContours(tmp, contours, -1, (0, 255, 0), 16)
+    plt.figure()
     plt.imshow(opencv2matplotlib(tmp))
