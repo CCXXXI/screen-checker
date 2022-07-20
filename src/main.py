@@ -91,15 +91,8 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
     warped = four_point_transform(photo, corners)
     cropped = warped[16:-16, 16:-16]
 
-    # increase the brightness unless the color is black
-    bgr = cropped
-    if color is not Color.BLACK:
-        hsv = cv2.cvtColor(cropped, cv2.COLOR_BGR2HSV)
-        hsv[:, :, 2] += 255 - np.max(hsv[:, :, 2])
-        bgr = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
-
     # check the color with delta_E method
-    lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
+    lab = cv2.cvtColor(cropped, cv2.COLOR_BGR2LAB)
     expected = cvt_single_color(color2bgr[color], cv2.COLOR_BGR2LAB)
     delta_e = delta_E(lab, expected)
 
@@ -109,7 +102,6 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
         show(photo)
         show(warped)
         show(cropped)
-        show(bgr)
         show(
             255 - cv2.normalize(delta_e.astype(np.uint8), None, 0, 255, cv2.NORM_MINMAX)
         )
