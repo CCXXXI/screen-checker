@@ -7,6 +7,8 @@ from colour import delta_E
 from imutils import grab_contours
 from imutils.perspective import four_point_transform
 
+from opencv_utils import cvt_single_color
+
 
 class Color(Enum):
     """Colors."""
@@ -85,5 +87,5 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
 
     # check the color with delta_E method
     lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
-    expected = cv2.cvtColor(np.uint8([[color2bgr[color]]]), cv2.COLOR_BGR2LAB)[0][0]
+    expected = cvt_single_color(color, cv2.COLOR_BGR2LAB)
     return np.max(delta_E(lab, expected))
