@@ -87,5 +87,5 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
 
     # check the color with delta_E method
     lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
-    expected = cvt_single_color(color, cv2.COLOR_BGR2LAB)
+    expected = cvt_single_color(color2bgr[color], cv2.COLOR_BGR2LAB)
     return np.max(delta_E(lab, expected))
