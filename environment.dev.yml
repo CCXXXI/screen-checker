@@ -11,6 +11,7 @@ dependencies:
   - pip:
       - black[jupyter]
   - pytest-cov
+  - pytest-xdist
   - jupyter
   - matplotlib
   - memory_profiler
