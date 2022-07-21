@@ -122,6 +122,9 @@ def ocr_ssd(photo: npt.NDArray) -> str:
     corners = find_screen(photo, Color.WHITE)
     warped = four_point_transform(photo, corners)
 
+    # The following steps are not necessary for getting the correct result.
+    # But doing so improves the performance.
+
     # convert to binary
     gray = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
     binary = cv2.threshold(gray, None, 255, cv2.THRESH_OTSU)[1]
