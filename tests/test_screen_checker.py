@@ -15,10 +15,10 @@ photos = {c.name: set(c.glob("*")) for c in Path("../resources/").glob("*")}
 @mark.parametrize(
     "file, color",
     (
-        *product(photos["white"], set(Color) - {Color.BLACK}),
-        *product(photos["blue"], {Color.BLUE}),
-        *product(photos["green"], {Color.GREEN}),
-        *product(photos["red"], {Color.RED}),
+        *product(photos["white"], [Color.WHITE, Color.BLUE, Color.GREEN, Color.RED]),
+        *product(photos["blue"], [Color.BLUE]),
+        *product(photos["green"], [Color.GREEN]),
+        *product(photos["red"], [Color.RED]),
     ),
 )
 def test_find_screen(file: Path, color: Color):
@@ -45,10 +45,10 @@ def test_find_screen_error(file: Path, color: Color):
 @mark.parametrize(
     "file, color",
     (
-        *product(photos["white"], {Color.WHITE}),
-        *product(photos["blue"], {Color.BLUE}),
-        *product(photos["green"], {Color.GREEN}),
-        *product(photos["red"], {Color.RED}),
+        *product(photos["white"], [Color.WHITE]),
+        *product(photos["blue"], [Color.BLUE]),
+        *product(photos["green"], [Color.GREEN]),
+        *product(photos["red"], [Color.RED]),
     ),
 )
 def test_check_screen_pass(file: Path, color: Color):
@@ -60,7 +60,7 @@ def test_check_screen_pass(file: Path, color: Color):
 
 @mark.parametrize(
     "black, white",
-    product(photos["black"], {Path("../resources/white/0.png")}),
+    product(photos["black"], [Path("../resources/white/0.png")]),
 )
 def test_check_screen_pass_black(black: Path, white: Path):
     img_white = cv2.imread(white.as_posix())
@@ -77,10 +77,26 @@ def test_check_screen_pass_black(black: Path, white: Path):
 @mark.parametrize(
     "file, color, wrong_color",
     (
-        *product(photos["white"], {Color.WHITE}, set(Color) - {Color.WHITE}),
-        *product(photos["blue"], {Color.BLUE}, set(Color) - {Color.BLUE}),
-        *product(photos["green"], {Color.GREEN}, set(Color) - {Color.GREEN}),
-        *product(photos["red"], {Color.RED}, set(Color) - {Color.RED}),
+        *product(
+            photos["white"],
+            [Color.WHITE],
+            [Color.BLUE, Color.GREEN, Color.RED, Color.BLACK],
+        ),
+        *product(
+            photos["blue"],
+            [Color.BLUE],
+            [Color.WHITE, Color.GREEN, Color.RED, Color.BLACK],
+        ),
+        *product(
+            photos["green"],
+            [Color.GREEN],
+            [Color.WHITE, Color.BLUE, Color.RED, Color.BLACK],
+        ),
+        *product(
+            photos["red"],
+            [Color.RED],
+            [Color.WHITE, Color.BLUE, Color.GREEN, Color.BLACK],
+        ),
     ),
 )
 def test_check_screen_fail(file: Path, color: Color, wrong_color: Color):
@@ -93,7 +109,9 @@ def test_check_screen_fail(file: Path, color: Color, wrong_color: Color):
 @mark.parametrize(
     "black, white, wrong_color",
     product(
-        photos["black"], {Path("../resources/white/0.png")}, set(Color) - {Color.BLACK}
+        photos["black"],
+        [Path("../resources/white/0.png")],
+        [Color.BLUE, Color.GREEN, Color.RED, Color.WHITE],
     ),
 )
 def test_check_screen_fail_black(black: Path, white: Path, wrong_color: Color):
@@ -110,7 +128,7 @@ def test_check_screen_fail_black(black: Path, white: Path, wrong_color: Color):
 
 @mark.parametrize(
     "file, text",
-    product(photos["ocr"], {"128"}),
+    product(photos["ocr"], ["128"]),
 )
 def test_ocr_ssd(file: Path, text: str):
     img = cv2.imread(file.as_posix())
