@@ -126,11 +126,16 @@ def ocr_ssd(photo: npt.NDArray) -> str:
     gray = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
     binary = cv2.threshold(gray, None, 255, cv2.THRESH_OTSU)[1]
 
+    # crop to the text
+    x, y, w, h = cv2.boundingRect(binary)
+    cropped = binary[y : y + h, x : x + w]
+
     if debug:
         from opencv_debug import show
 
         show(warped)
         show(gray)
         show(binary)
+        show(cropped)
 
-    return image_to_string(Image.fromarray(binary), "lets", "--psm 8").strip()
+    return image_to_string(Image.fromarray(cropped), "lets", "--psm 8").strip()
