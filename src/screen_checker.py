@@ -3,9 +3,11 @@ from enum import Enum
 import cv2
 import numpy as np
 import numpy.typing as npt
+from PIL import Image
 from colour import delta_E
 from imutils import grab_contours
 from imutils.perspective import four_point_transform
+from pytesseract import image_to_string
 
 from opencv_utils import cvt_single_color
 
@@ -22,7 +24,7 @@ class Color(Enum):
     BLACK = 4
 
 
-color2bgr = {
+_color2bgr = {
     Color.BLUE: (255, 0, 0),
     Color.GREEN: (0, 255, 0),
     Color.RED: (0, 0, 255),
@@ -93,7 +95,7 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
 
     # check the color with delta_E method
     lab = cv2.cvtColor(cropped, cv2.COLOR_BGR2LAB)
-    expected = cvt_single_color(color2bgr[color], cv2.COLOR_BGR2LAB)
+    expected = cvt_single_color(_color2bgr[color], cv2.COLOR_BGR2LAB)
     delta_e = delta_E(lab, expected)
 
     if debug:
@@ -107,3 +109,36 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
         )
 
     return np.max(delta_e)
+
+
+def ocr_ssd(photo: npt.NDArray) -> str:
+    """
+    Optical character recognition for Seven Segment Display.
+
+    :param photo: A photo of the screen with some 7-segment text.
+    :return: The text on the screen.
+    """
+    # get the screen
+    corners = find_screen(photo, Color.WHITE)
+    warped = four_point_transform(photo, corners)
+
+    # The following steps are not necessary for getting the correct result.
+    # But doing so improves the performance.
+
+    # convert to binary
+    gray = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
+    binary = cv2.threshold(gray, None, 255, cv2.THRESH_OTSU)[1]
+
+    # crop to the text
+    x, y, w, h = cv2.boundingRect(binary)
+    cropped = binary[y : y + h, x : x + w]
+
+    if debug:
+        from opencv_debug import show
+
+        show(warped)
+        show(gray)
+        show(binary)
+        show(cropped)
+
+    return image_to_string(Image.fromarray(cropped), "lets", "--psm 8").strip()
