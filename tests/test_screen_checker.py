@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from pytest import mark, raises
 
-from screen_checker import Color, find_screen, check_screen
+from screen_checker import Color, find_screen, check_screen, ocr_ssd
 
 PASS_LIMIT = FAIL_LIMIT = 30
 
@@ -108,6 +108,20 @@ def test_check_screen_fail_black(black: Path, white: Path, wrong_color: Color):
     )
 
 
+@mark.parametrize(
+    "file, text",
+    product(photos["ocr"], {"128"}),
+)
+def test_ocr_ssd(file: Path, text: str):
+    img = cv2.imread(file.as_posix())
+    assert img is not None
+
+    assert ocr_ssd(img) == text
+    assert ocr_ssd(img[::-1, :, :]) != text
+    assert ocr_ssd(img[:, ::-1, :]) != text
+    assert ocr_ssd(img[::-1, ::-1, :]) != text
+
+
 def test_debug():
     import screen_checker
 
@@ -116,6 +130,7 @@ def test_debug():
     img = cv2.imread("../resources/white/0.png")
     assert img is not None
     assert check_screen(img, Color.WHITE, find_screen(img, Color.WHITE)) < PASS_LIMIT
+    assert ocr_ssd(img) is not None
 
     img = cv2.imread("../resources/green/0.png")
     assert img is not None

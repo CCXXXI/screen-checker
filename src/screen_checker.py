@@ -3,9 +3,11 @@ from enum import Enum
 import cv2
 import numpy as np
 import numpy.typing as npt
+from PIL import Image
 from colour import delta_E
 from imutils import grab_contours
 from imutils.perspective import four_point_transform
+from pytesseract import image_to_string
 
 from opencv_utils import cvt_single_color
 
@@ -107,3 +109,40 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
         )
 
     return np.max(delta_e)
+
+
+def ocr_ssd(photo: npt.NDArray) -> str:
+    """
+    Optical character recognition for Seven Segment Display.
+
+    :param photo: A photo of the screen with some 7-segment text.
+    :return: The text on the screen.
+    """
+    # get the screen
+    corners = find_screen(photo, Color.WHITE)
+    warped = four_point_transform(photo, corners)
+
+    # convert to binary
+    gray = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
+    binary = cv2.threshold(gray, None, 255, cv2.THRESH_OTSU)[1]
+
+    # crop to the text
+    x, y, w, h = cv2.boundingRect(binary)
+    cropped = binary[y - 16 : y + h + 16, x - 16 : x + w + 16]
+
+    # dilate and erode to connect the segments
+    kernel = np.ones((h // 10, w // 20), np.uint8)
+    dilated = cv2.dilate(cropped, kernel)
+    eroded = cv2.erode(dilated, kernel)
+
+    if debug:
+        from opencv_debug import show
+
+        show(warped)
+        show(gray)
+        show(binary)
+        show(cropped)
+        show(dilated)
+        show(eroded)
+
+    return image_to_string(Image.fromarray(eroded), "ssd", "--psm 8").strip()
