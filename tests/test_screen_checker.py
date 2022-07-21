@@ -2,6 +2,7 @@ from itertools import product
 from pathlib import Path
 
 import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 from pytest import mark, raises
 
@@ -148,10 +149,13 @@ def test_debug():
     img = cv2.imread("../resources/white/0.png")
     assert img is not None
     assert check_screen(img, Color.WHITE, find_screen(img, Color.WHITE)) < PASS_LIMIT
+    plt.close("all")
     assert ocr_ssd(img) is not None
+    plt.close("all")
 
     img = cv2.imread("../resources/green/0.png")
     assert img is not None
     assert check_screen(img, Color.GREEN, find_screen(img, Color.GREEN)) < PASS_LIMIT
+    plt.close("all")
 
     screen_checker.debug = False
