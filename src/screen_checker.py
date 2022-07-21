@@ -24,7 +24,7 @@ class Color(Enum):
     BLACK = 4
 
 
-color2bgr = {
+_color2bgr = {
     Color.BLUE: (255, 0, 0),
     Color.GREEN: (0, 255, 0),
     Color.RED: (0, 0, 255),
@@ -95,7 +95,7 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
 
     # check the color with delta_E method
     lab = cv2.cvtColor(cropped, cv2.COLOR_BGR2LAB)
-    expected = cvt_single_color(color2bgr[color], cv2.COLOR_BGR2LAB)
+    expected = cvt_single_color(_color2bgr[color], cv2.COLOR_BGR2LAB)
     delta_e = delta_E(lab, expected)
 
     if debug:
