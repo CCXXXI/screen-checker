@@ -128,12 +128,7 @@ def ocr_ssd(photo: npt.NDArray) -> str:
 
     # crop to the text
     x, y, w, h = cv2.boundingRect(binary)
-    cropped = binary[y - 16 : y + h + 16, x - 16 : x + w + 16]
-
-    # dilate and erode to connect the segments
-    kernel = np.ones((h // 10, w // 20), np.uint8)
-    dilated = cv2.dilate(cropped, kernel)
-    eroded = cv2.erode(dilated, kernel)
+    cropped = binary[y : y + h, x : x + w]
 
     if debug:
         from opencv_debug import show
@@ -142,7 +137,5 @@ def ocr_ssd(photo: npt.NDArray) -> str:
         show(gray)
         show(binary)
         show(cropped)
-        show(dilated)
-        show(eroded)
 
-    return image_to_string(Image.fromarray(eroded), "ssd", "--psm 8").strip()
+    return image_to_string(Image.fromarray(cropped), "lets", "--psm 8").strip()
