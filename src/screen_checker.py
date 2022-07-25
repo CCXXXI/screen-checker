@@ -25,10 +25,10 @@ class Color(Enum):
 
 
 _color2bgr = {
-    Color.BLUE: (255, 0, 0),
-    Color.GREEN: (0, 255, 0),
-    Color.RED: (0, 0, 255),
-    Color.WHITE: (255, 255, 255),
+    Color.BLUE: (1, 0, 0),
+    Color.GREEN: (0, 1, 0),
+    Color.RED: (0, 0, 1),
+    Color.WHITE: (1, 1, 1),
     Color.BLACK: (0, 0, 0),
 }
 
@@ -87,15 +87,15 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
     :param photo: A photo of the screen.
     :param color: The color of the screen.
     :param corners: The result of find_screen.
-    :return: A float value. Smaller means better.
+    :return: A float value between 0 and 100. Smaller means better.
     """
     # transform to rectangle
     warped = four_point_transform(photo, corners)
     cropped = warped[16:-16, 16:-16]
 
     # check the color with delta_E method
-    lab = cv2.cvtColor(cropped, cv2.COLOR_BGR2LAB)
-    expected = cvt_single_color(_color2bgr[color], cv2.COLOR_BGR2LAB)
+    lab = cv2.cvtColor(cropped.astype(np.float32) / 255, cv2.COLOR_BGR2LAB)
+    expected = cvt_single_color(_color2bgr[color], cv2.COLOR_BGR2LAB, np.float32)
     delta_e = delta_E(lab, expected)
 
     if debug:
@@ -133,6 +133,19 @@ def ocr_ssd(photo: npt.NDArray) -> str:
     x, y, w, h = cv2.boundingRect(binary)
     cropped = binary[y : y + h, x : x + w]
 
+    # add borders
+    # see https://tesseract-ocr.github.io/tessdoc/ImproveQuality.html#missing-borders
+    border_width = 10
+    bordered = cv2.copyMakeBorder(
+        cropped,
+        top=border_width,
+        bottom=border_width,
+        left=border_width,
+        right=border_width,
+        borderType=cv2.BORDER_CONSTANT,
+        value=(0, 0, 0),
+    )
+
     if debug:
         from opencv_debug import show
 
@@ -140,5 +153,6 @@ def ocr_ssd(photo: npt.NDArray) -> str:
         show(gray)
         show(binary)
         show(cropped)
+        show(bordered)
 
-    return image_to_string(Image.fromarray(cropped), "lets", "--psm 8").strip()
+    return image_to_string(Image.fromarray(bordered), "lets", "--psm 8").strip()

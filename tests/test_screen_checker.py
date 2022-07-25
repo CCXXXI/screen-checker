@@ -8,7 +8,7 @@ from pytest import mark, raises
 
 from screen_checker import Color, find_screen, check_screen, ocr_ssd
 
-PASS_LIMIT = FAIL_LIMIT = 30
+PASS_LIMIT = FAIL_LIMIT = 25
 
 photos = {c.name: set(c.glob("*")) for c in Path("../resources/").glob("*")}
 
