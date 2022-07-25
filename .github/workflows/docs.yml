@@ -20,7 +20,7 @@ jobs:
       - uses: mamba-org/provision-with-micromamba@v12
         with:
           environment-file: "environment.dev.yml"
-      - run: pdoc src/ -o docs/
+      - run: pdoc src/screen_checker.py -o docs/
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
