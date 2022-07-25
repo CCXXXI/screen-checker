@@ -87,7 +87,7 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
     :param photo: A photo of the screen.
     :param color: The color of the screen.
     :param corners: The result of find_screen.
-    :return: A float value. Smaller means better.
+    :return: A float value between 0 and 100. Smaller means better.
     """
     # transform to rectangle
     warped = four_point_transform(photo, corners)
