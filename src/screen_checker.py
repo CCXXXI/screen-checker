@@ -133,6 +133,19 @@ def ocr_ssd(photo: npt.NDArray) -> str:
     x, y, w, h = cv2.boundingRect(binary)
     cropped = binary[y : y + h, x : x + w]
 
+    # add borders
+    # see https://tesseract-ocr.github.io/tessdoc/ImproveQuality.html#missing-borders
+    border_width = 10
+    bordered = cv2.copyMakeBorder(
+        cropped,
+        top=border_width,
+        bottom=border_width,
+        left=border_width,
+        right=border_width,
+        borderType=cv2.BORDER_CONSTANT,
+        value=(0, 0, 0),
+    )
+
     if debug:
         from opencv_debug import show
 
@@ -140,5 +153,6 @@ def ocr_ssd(photo: npt.NDArray) -> str:
         show(gray)
         show(binary)
         show(cropped)
+        show(bordered)
 
-    return image_to_string(Image.fromarray(cropped), "lets", "--psm 8").strip()
+    return image_to_string(Image.fromarray(bordered), "lets", "--psm 8").strip()
