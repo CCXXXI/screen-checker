@@ -15,3 +15,4 @@ dependencies:
   - jupyter
   - matplotlib
   - memory_profiler
+  - pdoc
