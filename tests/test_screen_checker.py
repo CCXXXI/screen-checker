@@ -1,4 +1,4 @@
-from itertools import product
+from itertools import chain, product
 from pathlib import Path
 
 import cv2
@@ -10,7 +10,12 @@ from screen_checker import Color, find_screen, check_screen, ocr_ssd
 
 PASS_LIMIT = FAIL_LIMIT = 25
 
-photos = {c.name: set(c.glob("*")) for c in Path("../resources/").glob("*")}
+photos = {c.name: set(c.iterdir()) for c in Path("../resources/").iterdir()}
+
+
+@mark.parametrize("file", chain.from_iterable(photos.values()))
+def test_imread(file: Path):
+    assert cv2.imread(file.as_posix()) is not None
 
 
 @mark.parametrize(
@@ -28,7 +33,7 @@ def test_find_screen(file: Path, color: Color):
 
     corners = find_screen(img, color)
     assert corners.shape == (4, 2)
-    assert np.all(corners > 0)
+    assert np.all(corners >= 0)
 
 
 @mark.parametrize(
