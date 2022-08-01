@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Literal
 
 import cv2
 import numpy as np
@@ -80,13 +81,31 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
     return approx[:, 0, :]
 
 
-def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> float:
+def check_screen(
+    photo: npt.NDArray,
+    color: Color,
+    corners: npt.NDArray,
+    method: Literal[
+        "CIE 1976",
+        "CIE 1994",
+        "CIE 2000",
+        "CMC",
+        "CAM02-LCD",
+        "CAM02-SCD",
+        "CAM02-UCS",
+        "CAM16-LCD",
+        "CAM16-SCD",
+        "CAM16-UCS",
+        "DIN99",
+    ] = "CIE2000",
+) -> float:
     """
     Check if the color of the screen is correct.
 
     :param photo: A photo of the screen.
     :param color: The color of the screen.
     :param corners: The result of find_screen.
+    :param method: The computation method of delta_E.
     :return: A float value between 0 and 100. Smaller means better.
     """
     # transform to rectangle
@@ -96,7 +115,7 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
     # check the color with delta_E method
     lab = cv2.cvtColor(cropped.astype(np.float32) / 255, cv2.COLOR_BGR2LAB)
     expected = cvt_single_color(_color2bgr[color], cv2.COLOR_BGR2LAB, np.float32)
-    delta_e = delta_E(lab, expected)
+    delta_e = delta_E(lab, expected, method=method)
 
     if debug:
         from opencv_debug import show
