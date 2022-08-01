@@ -28,7 +28,7 @@ def test_find_screen(file: Path, color: Color):
 
     corners = find_screen(img, color)
     assert corners.shape == (4, 2)
-    assert np.all(corners > 0)
+    assert np.all(corners >= 0)
 
 
 @mark.parametrize(
