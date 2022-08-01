@@ -104,7 +104,11 @@ def check_screen(photo: npt.NDArray, color: Color, corners: npt.NDArray) -> floa
         show(photo)
         show(warped)
         show(cropped)
-        show(1 - cv2.normalize(delta_e.astype(np.float32), None, 0, 1, cv2.NORM_MINMAX))
+
+        normalized = cv2.normalize(delta_e, None, 0, 255, cv2.NORM_MINMAX)
+        equalized = cv2.equalizeHist(normalized.astype(np.uint8))
+        inverted = cv2.bitwise_not(equalized)
+        show(inverted)
 
     return np.max(delta_e)
 
