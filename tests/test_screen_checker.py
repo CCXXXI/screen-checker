@@ -155,6 +155,7 @@ def test_debug():
     assert img is not None
     assert check_screen(img, Color.WHITE, find_screen(img, Color.WHITE)) < PASS_LIMIT
     plt.close("all")
+
     assert ocr_ssd(img) is not None
     plt.close("all")
 
