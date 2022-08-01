@@ -1,4 +1,4 @@
-from itertools import product
+from itertools import chain, product
 from pathlib import Path
 
 import cv2
@@ -11,6 +11,11 @@ from screen_checker import Color, find_screen, check_screen, ocr_ssd
 PASS_LIMIT = FAIL_LIMIT = 25
 
 photos = {c.name: set(c.glob("*")) for c in Path("../resources/").glob("*")}
+
+
+@mark.parametrize("file", chain.from_iterable(photos.values()))
+def test_imread(file: Path):
+    assert cv2.imread(file.as_posix()) is not None
 
 
 @mark.parametrize(
