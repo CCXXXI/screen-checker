@@ -97,7 +97,7 @@ def check_screen(
         "CAM16-SCD",
         "CAM16-UCS",
         "DIN99",
-    ] = "CIE2000",
+    ] = "CIE 2000",
 ) -> float:
     """
     Check if the color of the screen is correct.
