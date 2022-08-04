@@ -134,9 +134,9 @@ def check_screen(
 
 def ocr_ssd(photo: npt.NDArray) -> str:
     """
-    Optical character recognition for Seven Segment Display.
+    Optical character recognition for seven-segment display.
 
-    :param photo: A photo of the screen with some 7-segment text.
+    :param photo: A photo of the screen with some seven-segment display text.
     :return: The text on the screen.
     """
     # get the screen
