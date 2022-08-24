@@ -36,7 +36,6 @@ def test_imread(file: Path):
 )
 def test_find_screen(file: Path, color: Color):
     img = cv2.imread(file.as_posix())
-    assert img is not None
 
     corners = find_screen(img, color)
     assert corners.shape == (4, 2)
@@ -49,7 +48,6 @@ def test_find_screen(file: Path, color: Color):
 )
 def test_find_screen_error(file: Path, color: Color):
     img = cv2.imread(file.as_posix())
-    assert img is not None
 
     with raises(ValueError):
         find_screen(img, color)
@@ -66,7 +64,6 @@ def test_find_screen_error(file: Path, color: Color):
 )
 def test_get_lengths(file: Path, color: Color):
     img = cv2.imread(file.as_posix())
-    assert img is not None
 
     corners = find_screen(img, color)
     lengths = get_lengths(corners)
@@ -86,7 +83,6 @@ def test_get_lengths(file: Path, color: Color):
 )
 def test_get_size(file: Path, color: Color):
     img = cv2.imread(file.as_posix())
-    assert img is not None
 
     corners = find_screen(img, color)
     size = get_size(corners)
@@ -105,7 +101,6 @@ def test_get_size(file: Path, color: Color):
 )
 def test_check_screen_pass(file: Path, color: Color):
     img = cv2.imread(file.as_posix())
-    assert img is not None
 
     assert check_screen(img, color, find_screen(img, color)) < PASS_LIMIT
 
@@ -153,7 +148,6 @@ def test_check_screen_pass_black(black: Path, white: Path):
 )
 def test_check_screen_fail(file: Path, color: Color, wrong_color: Color):
     img = cv2.imread(file.as_posix())
-    assert img is not None
 
     assert check_screen(img, wrong_color, find_screen(img, color)) > FAIL_LIMIT
 
@@ -184,7 +178,6 @@ def test_check_screen_fail_black(black: Path, white: Path, wrong_color: Color):
 )
 def test_ocr_ssd(file: Path, text: str):
     img = cv2.imread(file.as_posix())
-    assert img is not None
 
     assert ocr_ssd(img) == text
     assert ocr_ssd(img[::-1, :, :]) != text
@@ -198,7 +191,6 @@ def test_debug():
     screen_checker.debug = True
 
     img = cv2.imread("../resources/white/0.png")
-    assert img is not None
     assert check_screen(img, Color.WHITE, find_screen(img, Color.WHITE)) < PASS_LIMIT
     plt.close("all")
 
@@ -206,7 +198,6 @@ def test_debug():
     plt.close("all")
 
     img = cv2.imread("../resources/green/0.png")
-    assert img is not None
     assert check_screen(img, Color.GREEN, find_screen(img, Color.GREEN)) < PASS_LIMIT
     plt.close("all")
 
