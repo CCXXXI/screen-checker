@@ -83,7 +83,7 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
 
 def get_lengths(corners: npt.NDArray):
     """
-    Get lengths of the four sides of the screen.
+    Get the lengths of the four sides of the screen.
 
     :param corners: The result of find_screen.
     :return: Four double value.
