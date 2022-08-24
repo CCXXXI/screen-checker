@@ -94,6 +94,19 @@ def get_lengths(corners: npt.NDArray):
     ]
 
 
+def get_size(corner: npt.NDArray):
+    """
+    Get the size of the screen.
+
+    See https://stackoverflow.com/a/30408825/13805358.
+
+    :param corner: The result of find_screen.
+    :return: The size of the screen.
+    """
+    x, y = corner[:, 0], corner[:, 1]
+    return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
+
+
 def check_screen(
     photo: npt.NDArray,
     color: Color,

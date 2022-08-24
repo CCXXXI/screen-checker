@@ -6,7 +6,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pytest import mark, raises
 
-from screen_checker import Color, find_screen, check_screen, get_lengths, ocr_ssd
+from screen_checker import (
+    Color,
+    find_screen,
+    check_screen,
+    get_lengths,
+    get_size,
+    ocr_ssd,
+)
 
 PASS_LIMIT = FAIL_LIMIT = 25
 
@@ -66,6 +73,25 @@ def test_get_lengths(file: Path, color: Color):
 
     assert abs(lengths[0] / lengths[2] - 1) < 0.1
     assert abs(lengths[1] / lengths[3] - 1) < 0.1
+
+
+@mark.parametrize(
+    "file, color",
+    (
+        *product(photos["white"], [Color.WHITE, Color.BLUE, Color.GREEN, Color.RED]),
+        *product(photos["blue"], [Color.BLUE]),
+        *product(photos["green"], [Color.GREEN]),
+        *product(photos["red"], [Color.RED]),
+    ),
+)
+def test_get_size(file: Path, color: Color):
+    img = cv2.imread(file.as_posix())
+    assert img is not None
+
+    corners = find_screen(img, color)
+    size = get_size(corners)
+
+    assert size > 0
 
 
 @mark.parametrize(
