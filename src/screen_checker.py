@@ -86,7 +86,7 @@ def get_lengths(corners: npt.NDArray):
     Get the lengths of the four sides of the screen.
 
     :param corners: The result of find_screen.
-    :return: Four double value.
+    :return: A list of four float values.
     """
     return [
         np.linalg.norm(corners[i] - corners[j])
