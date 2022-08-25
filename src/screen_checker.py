@@ -34,12 +34,15 @@ _color2bgr = {
 }
 
 
-def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
+def find_screen(
+    photo: npt.NDArray, color: Color, strict: bool = False
+) -> npt.NDArray | None:
     """
     Find the screen in the photo.
 
     :param photo: A photo of the screen.
     :param color: The color of the screen. Cannot be black.
+    :param strict: Return None if multiple contours are found.
     :return: Four (x, y) points which are the four corners of the screen.
     """
     if color is Color.BLACK:
@@ -56,6 +59,11 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
     contours = grab_contours(
         cv2.findContours(binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     )
+    contours = tuple(filter(lambda c: cv2.contourArea(c) > 4, contours))
+
+    # strict mode
+    if strict and len(contours) > 1:
+        return None
 
     # the contour of the screen should be the largest one
     screen_contour = max(contours, key=cv2.contourArea)
@@ -81,28 +89,27 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
     return approx[:, 0, :]
 
 
-def get_lengths(corners: npt.NDArray):
+def get_lengths(corners: npt.NDArray) -> tuple[float, ...]:
     """
     Get the lengths of the four sides of the screen.
 
     :param corners: The result of find_screen.
-    :return: A list of four float values.
+    :return: A tuple of four float values.
     """
-    return [
+    return tuple(
         np.linalg.norm(corners[i] - corners[j])
         for i, j in ((0, 1), (1, 2), (2, 3), (3, 0))
-    ]
+    )
 
 
-def get_size(corner: npt.NDArray):
+def get_size(corner: npt.NDArray) -> float:
     """
     Get the size of the screen.
-
-    See https://stackoverflow.com/a/30408825/13805358.
 
     :param corner: The result of find_screen.
     :return: The size of the screen.
     """
+    # See https://stackoverflow.com/a/30408825/13805358.
     x, y = corner[:, 0], corner[:, 1]
     return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 
