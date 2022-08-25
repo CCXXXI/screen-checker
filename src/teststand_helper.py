@@ -1,5 +1,3 @@
-"""Call functions in screen_checker with only numbers, booleans, strings, lists or tuples."""
-
 import cv2
 import numpy as np
 
