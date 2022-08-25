@@ -81,17 +81,17 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
     return approx[:, 0, :]
 
 
-def get_lengths(corners: npt.NDArray) -> list[float]:
+def get_lengths(corners: npt.NDArray) -> tuple[float, ...]:
     """
     Get the lengths of the four sides of the screen.
 
     :param corners: The result of find_screen.
-    :return: A list of four float values.
+    :return: A tuple of four float values.
     """
-    return [
+    return tuple(
         np.linalg.norm(corners[i] - corners[j])
         for i, j in ((0, 1), (1, 2), (2, 3), (3, 0))
-    ]
+    )
 
 
 def get_size(corner: npt.NDArray) -> float:
