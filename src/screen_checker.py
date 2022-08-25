@@ -34,12 +34,15 @@ _color2bgr = {
 }
 
 
-def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
+def find_screen(
+    photo: npt.NDArray, color: Color, strict: bool = False
+) -> npt.NDArray | None:
     """
     Find the screen in the photo.
 
     :param photo: A photo of the screen.
     :param color: The color of the screen. Cannot be black.
+    :param strict: Return None if multiple contours are found.
     :return: Four (x, y) points which are the four corners of the screen.
     """
     if color is Color.BLACK:
@@ -56,6 +59,11 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
     contours = grab_contours(
         cv2.findContours(binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     )
+    contours = tuple(filter(lambda c: cv2.contourArea(c) > 4, contours))
+
+    # strict mode
+    if strict and len(contours) > 1:
+        return None
 
     # the contour of the screen should be the largest one
     screen_contour = max(contours, key=cv2.contourArea)

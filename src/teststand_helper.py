@@ -14,7 +14,8 @@ def find_screen(photo: str, color: str = "WHITE") -> tuple[int]:
     :param color: The color of the screen. Cannot be black.
     :return: Four (x, y) points which are the four corners of the screen.
     """
-    return tuple(sc.find_screen(cv2.imread(photo), sc.Color[color]).flat)
+    res = sc.find_screen(cv2.imread(photo), sc.Color[color], True)
+    return tuple() if res is None else tuple(res.flat)
 
 
 def get_lengths(corners: tuple[int]) -> tuple[float]:
