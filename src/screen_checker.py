@@ -81,7 +81,7 @@ def find_screen(photo: npt.NDArray, color: Color) -> npt.NDArray:
     return approx[:, 0, :]
 
 
-def get_lengths(corners: npt.NDArray):
+def get_lengths(corners: npt.NDArray) -> list[float]:
     """
     Get the lengths of the four sides of the screen.
 
@@ -94,7 +94,7 @@ def get_lengths(corners: npt.NDArray):
     ]
 
 
-def get_size(corner: npt.NDArray):
+def get_size(corner: npt.NDArray) -> float:
     """
     Get the size of the screen.
 
