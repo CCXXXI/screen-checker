@@ -98,11 +98,10 @@ def get_size(corner: npt.NDArray) -> float:
     """
     Get the size of the screen.
 
-    See https://stackoverflow.com/a/30408825/13805358.
-
     :param corner: The result of find_screen.
     :return: The size of the screen.
     """
+    # See https://stackoverflow.com/a/30408825/13805358.
     x, y = corner[:, 0], corner[:, 1]
     return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 
