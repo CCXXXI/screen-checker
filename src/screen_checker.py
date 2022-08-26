@@ -34,9 +34,7 @@ _color2bgr = {
 }
 
 
-def find_screen(
-    photo: npt.NDArray, color: Color, strict: bool = False
-) -> npt.NDArray | None:
+def find_screen(photo: npt.NDArray, color: Color, strict: bool = False) -> npt.NDArray:
     """
     Find the screen in the photo.
 
@@ -63,7 +61,7 @@ def find_screen(
 
     # strict mode
     if strict and len(contours) > 1:
-        return None
+        raise ValueError("Multiple contours found.")
 
     # the contour of the screen should be the largest one
     screen_contour = max(contours, key=cv2.contourArea)
