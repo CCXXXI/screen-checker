@@ -40,7 +40,7 @@ def find_screen(photo: npt.NDArray, color: Color, strict: bool = False) -> npt.N
 
     :param photo: A photo of the screen.
     :param color: The color of the screen. Cannot be black.
-    :param strict: Return None if multiple contours are found.
+    :param strict: Raise an error if multiple contours are found.
     :return: Four (x, y) points which are the four corners of the screen.
     """
     if color is Color.BLACK:
