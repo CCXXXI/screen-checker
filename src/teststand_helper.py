@@ -4,7 +4,7 @@ import numpy as np
 import screen_checker as sc
 
 
-def find_screen(photo: str, color: str = "WHITE") -> tuple[int]:
+def find_screen(photo: str, color: str = "WHITE") -> tuple[int, ...]:
     """
     Find the screen in the photo.
 
@@ -16,7 +16,7 @@ def find_screen(photo: str, color: str = "WHITE") -> tuple[int]:
     return () if res is None else tuple(res.flat)
 
 
-def get_lengths(corners: tuple[int]) -> tuple[float]:
+def get_lengths(corners: tuple[int]) -> tuple[float, ...]:
     """
     Get the lengths of the four sides of the screen.
 
