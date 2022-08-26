@@ -5,12 +5,14 @@ def test_find_screen():
     corners = find_screen("../resources/white/1.png")
 
     assert len(corners) == 8
+    assert all(x >= 0 for x in corners)
 
 
 def test_find_screen_fail():
     corners = find_screen("../resources/white/0.png")
 
-    assert len(corners) == 0
+    assert len(corners) == 8
+    assert all(x == -1 for x in corners)
 
 
 def test_get_lengths():
