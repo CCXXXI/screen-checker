@@ -94,10 +94,7 @@ def get_lengths(corners: npt.NDArray) -> tuple[float, ...]:
     :param corners: The result of find_screen.
     :return: A tuple of four float values.
     """
-    return tuple(
-        np.linalg.norm(corners[i] - corners[j])
-        for i, j in ((0, 1), (1, 2), (2, 3), (3, 0))
-    )
+    return tuple(np.linalg.norm(corners[i] - corners[(i + 1) % 4]) for i in range(4))
 
 
 def get_size(corner: npt.NDArray) -> float:
